@@ -2,8 +2,7 @@ package com.ataraxer.apps.chess.scala.pieces
 
 import com.ataraxer.apps.chess.scala.Color._
 import com.ataraxer.apps.chess.scala.Coord
-import java.awt.image.AreaAveragingScaleFilter
-import moveTypes.MovesPredefined
+import com.ataraxer.apps.chess.scala.pieces.moveTypes.MovesPredefined
 
 class Knight(color: Color, position: Coord, hasMoved: Boolean = false) extends Piece(color, position, hasMoved) with MovesPredefined {
   override def getTypeAsString = "Kn"

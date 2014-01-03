@@ -26,7 +26,7 @@ class Board(inCells: Array[Array[Cell]] = null) {
    * Note that white pieces are always located in a top row and black
    * pieces — in a bottom one.
    */
-	private def defaultLayout: Array[Array[Cell]] = {
+    private def defaultLayout: Array[Array[Cell]] = {
     val defaultLayout
       = List(Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook)
 

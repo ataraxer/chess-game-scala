@@ -2,7 +2,7 @@ package com.ataraxer.apps.chess.scala.pieces
 
 import com.ataraxer.apps.chess.scala.Color._
 import com.ataraxer.apps.chess.scala.Coord
-import moveTypes.MovesLineary
+import com.ataraxer.apps.chess.scala.pieces.moveTypes.MovesLineary
 
 class Queen(color: Color, position: Coord, hasMoved: Boolean = false) extends Piece(color, position, hasMoved) with MovesLineary {
   override def getTypeAsString = "Qu"
