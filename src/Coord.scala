@@ -30,7 +30,7 @@ case class Coord(row: Int, col: Int) {
     }
   }
 
-  def copy = new Coord(row, col)
+  def copy = Coord(row, col)
 
   // shift operation/method for generating new coordinate by shifting
   // existing coordinate's dimensions values by given delta
@@ -40,7 +40,7 @@ case class Coord(row: Int, col: Int) {
   def shift(sh: List[Int]): Coord = shift(sh(0), sh(1))
   def shift(tor: Int, toc: Int): Coord = {
     try {
-      new Coord(row + tor, col + toc)
+      Coord(row + tor, col + toc)
     } catch {
       case e: IllegalArgumentException => null
     }

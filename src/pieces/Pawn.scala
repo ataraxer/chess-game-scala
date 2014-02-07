@@ -14,20 +14,22 @@ class Pawn(color: Color, position: Coord, hasMoved: Boolean = false) extends Pie
   val rowShift = if (color == White) 1 else -1
 
   def addMove(piecesColorMap: Array[Array[Color]], coordShift: List[Int]) = {
+    val List(xShift, yShift) = coordShift
+
     def colorOf(c: Coord) = piecesColorMap(c.row)(c.col)
 
-    val currentMove = position << List(coordShift(0) * rowShift, coordShift(1))
+    val currentMove = position << List(xShift * rowShift, yShift)
 
     def condition: Boolean = {
       val mc = colorOf(currentMove)
-      val cs = coordShift
-      ((mc == null
-        && ((cs(0) == 2 && !hasMoved) || cs(1) == 0))
-        || (cs(1).abs == 1 && mc == getColor.opposite))
+      val attacking   = (yShift.abs == 1 && mc == getColor.opposite)
+      val movingFirst = (!hasMoved && xShift == 2)
+      val moving      = yShift == 0
+      (mc == null && (movingFirst || moving)) || attacking
     }
 
     if (currentMove != null && condition)
       List(currentMove)
-    else List()
+    else Nil
   }
 }

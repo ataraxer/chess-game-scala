@@ -13,6 +13,7 @@ object Color extends Enumeration {
 
     def opposite = unary_!()
   }
-  
-  implicit def valueToColorValue(color: Value) = new ColorValue(color)
+
+  implicit def valueToColorValue(color: Value) =
+    new ColorValue(color)
 }

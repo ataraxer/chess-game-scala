@@ -26,7 +26,7 @@ class Board(inCells: Array[Array[Cell]] = null) {
    * Note that white pieces are always located in a top row and black
    * pieces — in a bottom one.
    */
-    private def defaultLayout: Array[Array[Cell]] = {
+  private def defaultLayout: Array[Array[Cell]] = {
     val defaultLayout
       = List(Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook)
 
@@ -106,8 +106,8 @@ class Board(inCells: Array[Array[Cell]] = null) {
 
     val newPiece = piece.setPosition(to)
     this.copy(List(
-      new Cell(to, newPiece),
-      new Cell(from, null)
+      Cell(to, newPiece),
+      Cell(from, null)
     ))
   }
 
@@ -134,7 +134,10 @@ class Board(inCells: Array[Array[Cell]] = null) {
    * Returns a list of all pieces of chosen color, provided as an argument.
    */
   def getPieces(c: Color) = {
-    for (row <- cells; cell <- row if !cell.isEmpty && cell.color == c) yield cell.getPiece
+    for (row <- cells;
+         cell <- row
+         if !cell.isEmpty && cell.color == c) 
+      yield cell.getPiece
   }
 
   /* Allows to print board in console in a user-readable way. */
