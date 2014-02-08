@@ -34,10 +34,10 @@ case class Coord(row: Int, col: Int) {
 
   // shift operation/method for generating new coordinate by shifting
   // existing coordinate's dimensions values by given delta
-  def << (sh: List[Int]) = shift(sh(0), sh(1))
+  def << (sh: (Int, Int)) = shift(sh)
   def << (tor: Int, toc: Int) = shift(tor, toc)
 
-  def shift(sh: List[Int]): Coord = shift(sh(0), sh(1))
+  def shift(sh: (Int, Int)): Coord = shift(sh._1, sh._2)
   def shift(tor: Int, toc: Int): Coord = {
     try {
       Coord(row + tor, col + toc)

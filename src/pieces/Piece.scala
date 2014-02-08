@@ -12,8 +12,8 @@ abstract class Piece(color: Color, position: Coord, hasMoved: Boolean) {
 
   def getTypeAsString: String
   def getType: PieceType.PieceType
-  def directionShifts: List[List[Int]]
-  def addMove(piecesColorMap: Array[Array[Color]], coordShift: List[Int]): List[Coord]
+  def directionShifts: List[(Int, Int)]
+  def addMove(piecesColorMap: Array[Array[Color]], coordShift: (Int, Int)): List[Coord]
 
   override def toString = {{if (color == White) "W" else "B"} + getTypeAsString}
 

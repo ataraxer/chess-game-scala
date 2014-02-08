@@ -14,11 +14,11 @@ trait MovesPredefined {
   def getPosition: Coord
   def moveIsValid(pieceColorMap: Array[Array[Color]], toCoord: Coord): Boolean
 
-  def addPredefinedMove(piecesColorMap: Array[Array[Color]], shift: List[Int]): List[Coord] = {
+  def addPredefinedMove(piecesColorMap: Array[Array[Color]], shift: (Int, Int)): List[Coord] = {
     val currentMove = getPosition << shift
 
     if (moveIsValid(piecesColorMap, currentMove))
       List(currentMove)
-    else List()
+    else Nil
   }
 }

@@ -4,14 +4,17 @@ import com.ataraxer.apps.chess.scala.Color._
 import com.ataraxer.apps.chess.scala.Coord
 import com.ataraxer.apps.chess.scala.pieces.moveTypes.MovesLineary
 
-class Queen(color: Color, position: Coord, hasMoved: Boolean = false) extends Piece(color, position, hasMoved) with MovesLineary {
+case class Queen(color: Color, position: Coord, hasMoved: Boolean = false)
+    extends Piece(color, position, hasMoved)
+    with MovesLineary
+{
   override def getTypeAsString = "Qu"
   override def getType = PieceType.Queen
   override def directionShifts = List(
-    List(0, 1), List(0, -1), List( 1, 0), List(-1,  0), // Vertical and horizontal moves
-    List(1, 1), List(1, -1), List(-1, 1), List(-1, -1)  // Diagonal moves
+    (0, 1), (0, -1), ( 1, 0), (-1,  0), // Vertical and horizontal moves
+    (1, 1), (1, -1), (-1, 1), (-1, -1)  // Diagonal moves
   )
 
-  override def addMove(piecesColorMap: Array[Array[Color]], coordShift: List[Int])
+  override def addMove(piecesColorMap: Array[Array[Color]], coordShift: (Int, Int))
     = iterateDirection(piecesColorMap, coordShift)
 }

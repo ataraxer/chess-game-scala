@@ -8,7 +8,6 @@ import com.ataraxer.apps.chess.scala.Coord
  * User: Ataraxer
  * Date: 11.12.12
  * Time: 11:26
- * To change this template use File | Settings | File Templates.
  */
 trait MovesLineary {
   def getPosition: Coord
@@ -16,14 +15,15 @@ trait MovesLineary {
 
   def iterateDirection(
     piecesColorMap: Array[Array[Color]],
-    coordShift: List[Int],
+    coordShift: (Int, Int),
     possibleTurns: List[Coord] = List[Coord](),
     iteration: Int = 1
     ): List[Coord] =
   {
     def colorOf(c: Coord) = if (c != null) piecesColorMap(c.row)(c.col) else null
 
-    val currentMove = getPosition << coordShift.map(_ * iteration)
+    val (xShift, yShift) = coordShift
+    val currentMove = getPosition << (xShift * iteration, yShift * iteration)
 
     if (moveIsValid(piecesColorMap, currentMove))
       if (colorOf(currentMove) == null)
