@@ -1,15 +1,12 @@
 package com.ataraxer.apps.chess.scala
 
 import com.ataraxer.apps.chess.scala.Color._
-import com.ataraxer.apps.chess.scala.pieces.{PieceFactory, Piece}
-import com.ataraxer.apps.chess.scala.pieces.PieceType._
+import com.ataraxer.apps.chess.scala.pieces._
 
 case class Cell(coordinates: Coord, piece: Piece) {
   def this(c: Coord) = this(c, null)
-  def this(c: Coord, pieceType: PieceType, color: Color)
-    = this(c, PieceFactory.createPiece(pieceType, color, c))
 
-  def color = if (!isEmpty) piece.getColor else null
+  def color = if (!isEmpty) piece.color else null
   def getCoordinates = coordinates
   def getPiece = piece
 

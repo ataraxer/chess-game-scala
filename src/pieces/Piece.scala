@@ -8,22 +8,15 @@ import com.ataraxer.apps.chess.scala.Coord
  * chess piece which can be located somewhere on the board
  *
  */
-abstract class Piece(color: Color, position: Coord, hasMoved: Boolean) {
+abstract class Piece(val color: Color, val position: Coord, val hasMoved: Boolean) {
 
   def getTypeAsString: String
-  def getType: PieceType.PieceType
   def directionShifts: List[(Int, Int)]
   def addMove(piecesColorMap: Array[Array[Color]], coordShift: (Int, Int)): List[Coord]
 
   override def toString = {{if (color == White) "W" else "B"} + getTypeAsString}
 
-  def getColor = color
-  def getPosition = position
-
-  // TODO: replace with copy?
-  def setPosition(newPosition: Coord) = {
-    PieceFactory.createPiece(getType, color, newPosition, true)
-  }
+  def setPosition(newPosition: Coord): Piece
 
   def moveIsValid(pieceColorMap: Array[Array[Color]], toCoord: Coord) = {
     (toCoord != null && pieceColorMap(toCoord.row)(toCoord.col) != color)
@@ -34,8 +27,4 @@ abstract class Piece(color: Color, position: Coord, hasMoved: Boolean) {
          move  <- addMove(piecesColorMap, shift))
     yield move
   }
-
-  def copy(newPosition: Coord): Piece = PieceFactory.createPiece(getType, color, newPosition)
-  def copy: Piece = copy(position)
-
 }

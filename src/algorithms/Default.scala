@@ -2,7 +2,7 @@ package com.ataraxer.apps.chess.scala.algorithms
 
 import com.ataraxer.apps.chess.scala.{Coord, Board}
 import com.ataraxer.apps.chess.scala.Color._
-import com.ataraxer.apps.chess.scala.pieces.{Piece, PieceType}
+import com.ataraxer.apps.chess.scala.pieces._
 
 /**
  * DRAFT
@@ -20,7 +20,7 @@ object Default {
       // generate move results
       val addBoards =
         for (move <- possibleMoves)
-          yield board.movePiece(piece.getPosition, move)
+          yield board.movePiece(piece.position, move)
 
       resultingBoards = resultingBoards ++ addBoards
     }
@@ -38,13 +38,13 @@ object Default {
   }
 
   private def pieceValue(p: Piece): Int = {
-    p.getType match {
-      case PieceType.Pawn   => 1
-      case PieceType.Knight => 3
-      case PieceType.Bishop => 3
-      case PieceType.Rook   => 5
-      case PieceType.Queen  => 9
-      case PieceType.King   => 20
+    p match {
+      case Pawn(_, _, _)   => 1
+      case Knight(_, _, _) => 3
+      case Bishop(_, _, _) => 3
+      case Rook(_, _, _)   => 5
+      case Queen(_, _, _)  => 9
+      case King(_, _, _)   => 20
     }
   }
 
@@ -58,7 +58,7 @@ object Default {
       )
       for (move <- cellInfluence) {
         if (!board.getCell(move).isEmpty) {
-          if (board.getPiece(move).getColor == color) {
+          if (board.getPiece(move).color == color) {
             score += 3
           } else {
             score += pieceValue(

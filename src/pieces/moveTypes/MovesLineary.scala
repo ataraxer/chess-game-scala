@@ -10,7 +10,7 @@ import com.ataraxer.apps.chess.scala.Coord
  * Time: 11:26
  */
 trait MovesLineary {
-  def getPosition: Coord
+  val position: Coord
   def moveIsValid(pieceColorMap: Array[Array[Color]], toCoord: Coord): Boolean
 
   def iterateDirection(
@@ -23,7 +23,7 @@ trait MovesLineary {
     def colorOf(c: Coord) = if (c != null) piecesColorMap(c.row)(c.col) else null
 
     val (xShift, yShift) = coordShift
-    val currentMove = getPosition << (xShift * iteration, yShift * iteration)
+    val currentMove = position << (xShift * iteration, yShift * iteration)
 
     if (moveIsValid(piecesColorMap, currentMove))
       if (colorOf(currentMove) == null)

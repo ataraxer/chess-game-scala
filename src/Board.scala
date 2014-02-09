@@ -1,9 +1,7 @@
 package com.ataraxer.apps.chess.scala
 
 import com.ataraxer.apps.chess.scala.Color._
-import com.ataraxer.apps.chess.scala.pieces.PieceType
-import com.ataraxer.apps.chess.scala.pieces.PieceType._
-import pieces.{Pawn, PieceFactory}
+import com.ataraxer.apps.chess.scala.pieces._
 
 /*
  * Class board represents a chess playing board which consists of 64 cells
@@ -32,10 +30,11 @@ class Board(inCells: Array[Array[Cell]] = null) {
 
     def generateLastRow(row: Int, color: Color) =
       for ((pieceType, i) <- defaultLayout.zipWithIndex)
-        yield new Cell(Coord(row, i), pieceType, color)
+        yield new Cell(Coord(row, i), pieceType(color, Coord(row, i), false))
 
     def generatePawnRow(row: Int, color: Color) =
-      for (i <- 0 to 7) yield new Cell(Coord(row, i), PieceType.Pawn, color)
+      for (i <- 0 to 7)
+        yield new Cell(Coord(row, i), Pawn(color, Coord(row, i)))
 
     def generateRow(row: Int) =
       row match {
