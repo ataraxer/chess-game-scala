@@ -17,6 +17,6 @@ case class Bishop(_color: Color, _position: Coord, _hasMoved: Boolean = false)
   override def setPosition(position: Coord) =
     Bishop(color, position, hasMoved)
 
-  override def addMove(piecesColorMap: Array[Array[Color]], coordShift: (Int, Int))
-    = iterateDirection(piecesColorMap, coordShift)
+  override def addMove(piecesColorMap: ColorMap, coordShift: (Int, Int)) =
+    iterateDirection(piecesColorMap, coordShift)
 }

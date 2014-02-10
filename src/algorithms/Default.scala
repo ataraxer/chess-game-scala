@@ -12,7 +12,7 @@ object Default {
     val myPieces = board.getPieces(color)
     var resultingBoards: List[Board] = List()
 
-    for (piece <- myPieces) {
+    for (Some(piece) <- myPieces) {
       // generate moves
       val possibleMoves = piece.possibleMoves(
         board.piecesColorMap
@@ -52,7 +52,7 @@ object Default {
     var score = 0;
 
     val myPieces = board.getPieces(color)
-    for (piece <- myPieces) {
+    for (Some(piece) <- myPieces) {
       val cellInfluence = piece.possibleMoves(
         board.piecesColorMap
       )

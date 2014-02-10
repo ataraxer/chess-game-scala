@@ -16,6 +16,6 @@ case class Rook(_color: Color, _position: Coord, _hasMoved: Boolean = false)
   override def setPosition(position: Coord) =
     Rook(color, position, hasMoved)
 
-  override def addMove(piecesColorMap: Array[Array[Color]], coordShift: (Int, Int))
+  override def addMove(piecesColorMap: ColorMap, coordShift: (Int, Int))
     = iterateDirection(piecesColorMap, coordShift)
 }

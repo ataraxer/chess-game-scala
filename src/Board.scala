@@ -30,11 +30,11 @@ class Board(inCells: Array[Array[Cell]] = null) {
 
     def generateLastRow(row: Int, color: Color) =
       for ((pieceType, i) <- defaultLayout.zipWithIndex)
-        yield new Cell(Coord(row, i), pieceType(color, Coord(row, i), false))
+        yield new Cell(Coord(row, i), Some(pieceType(color, Coord(row, i), false)))
 
     def generatePawnRow(row: Int, color: Color) =
       for (i <- 0 to 7)
-        yield new Cell(Coord(row, i), Pawn(color, Coord(row, i)))
+        yield new Cell(Coord(row, i), Some(Pawn(color, Coord(row, i))))
 
     def generateRow(row: Int) =
       row match {
@@ -55,10 +55,10 @@ class Board(inCells: Array[Array[Cell]] = null) {
    * representing those coordinates.
    */
   def getCell(c: Coord)  = cells(c.row)(c.col)
-  /*
-   * Accessor for a piece in a cell specified by it's coordinate.
-   */
-  def getPiece(c: Coord) = getCell(c).getPiece
+  def getPiece(c: Coord) = getCell(c).piece match {
+    case Some(piece) => piece
+    case None => null
+  }
 
   /*
    * Generate a 'color map' of a board — a two-dimensional array which
@@ -105,8 +105,8 @@ class Board(inCells: Array[Array[Cell]] = null) {
 
     val newPiece = piece.setPosition(to)
     this.copy(List(
-      Cell(to, newPiece),
-      Cell(from, null)
+      Cell(to, Some(newPiece)),
+      Cell(from, None)
     ))
   }
 
@@ -120,8 +120,8 @@ class Board(inCells: Array[Array[Cell]] = null) {
    */
   def copy(updatedCells: List[Cell] = null) = {
     def copyCell(c: Cell): Cell = {
-      val updated = updatedCells filter { _ == c }
-      if (updated.nonEmpty) updated.head else c.copy
+      val updated = updatedCells filter { _.coordinates == c.coordinates }
+      if (updated.nonEmpty) updated.head else c
     }
 
     val newCells = for (row <- cells) yield row map { copyCell(_) }
@@ -136,7 +136,7 @@ class Board(inCells: Array[Array[Cell]] = null) {
     for (row <- cells;
          cell <- row
          if !cell.isEmpty && cell.color == c) 
-      yield cell.getPiece
+      yield cell.piece
   }
 
   /* Allows to print board in console in a user-readable way. */

@@ -11,27 +11,28 @@ import com.ataraxer.apps.chess.scala.Coord
  */
 trait MovesLineary {
   val position: Coord
-  def moveIsValid(pieceColorMap: Array[Array[Color]], toCoord: Coord): Boolean
+  def moveIsValid(pieceColorMap: ColorMap, toCoord: Coord): Boolean
 
   def iterateDirection(
-    piecesColorMap: Array[Array[Color]],
+    piecesColorMap: ColorMap,
     coordShift: (Int, Int),
     possibleTurns: List[Coord] = List[Coord](),
     iteration: Int = 1
     ): List[Coord] =
   {
-    def colorOf(c: Coord) = if (c != null) piecesColorMap(c.row)(c.col) else null
+    def colorOf(c: Coord) = piecesColorMap(c.row)(c.col)
 
     val (xShift, yShift) = coordShift
     val currentMove = position << (xShift * iteration, yShift * iteration)
+    currentMove match {
+      case Some(move) =>
+        if (moveIsValid(piecesColorMap, move))
+          iterateDirection(
+            piecesColorMap, coordShift, possibleTurns :+ move, iteration + 1
+          )
+        else possibleTurns
+      case None => possibleTurns
+    }
 
-    if (moveIsValid(piecesColorMap, currentMove))
-      if (colorOf(currentMove) == null)
-        iterateDirection(
-          piecesColorMap, coordShift, possibleTurns :+ currentMove, iteration + 1
-        )
-      else possibleTurns :+ currentMove
-    else
-      possibleTurns
   }
 }

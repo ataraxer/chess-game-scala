@@ -37,12 +37,12 @@ case class Coord(row: Int, col: Int) {
   def << (sh: (Int, Int)) = shift(sh)
   def << (tor: Int, toc: Int) = shift(tor, toc)
 
-  def shift(sh: (Int, Int)): Coord = shift(sh._1, sh._2)
-  def shift(tor: Int, toc: Int): Coord = {
+  def shift(sh: (Int, Int)): Option[Coord] = shift(sh._1, sh._2)
+  def shift(tor: Int, toc: Int): Option[Coord] = {
     try {
-      Coord(row + tor, col + toc)
+      Some(Coord(row + tor, col + toc))
     } catch {
-      case e: IllegalArgumentException => null
+      case e: IllegalArgumentException => None
     }
   }
 

@@ -2,6 +2,8 @@ package com.ataraxer.apps.chess.scala
 
 object Color extends Enumeration {
   type Color = Value
+  type ColorMap = Array[Array[Option[Color]]]
+
   val White, Black = Value
 
   class ColorValue(color: Value) {

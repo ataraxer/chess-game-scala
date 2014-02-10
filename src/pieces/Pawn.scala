@@ -17,23 +17,27 @@ case class Pawn(_color: Color, _position: Coord, _hasMoved: Boolean = false)
 
   val rowShift = if (color == White) 1 else -1
 
-  def addMove(piecesColorMap: Array[Array[Color]], coordShift: (Int, Int)) = {
+  def addMove(piecesColorMap: ColorMap, coordShift: (Int, Int)) = {
     val (xShift, yShift) = coordShift
 
-    def colorOf(c: Coord) = piecesColorMap(c.row)(c.col)
+    def colorOf(c: Coord) = piecesColorMap(c.row)(c.col) match {
+      case Some(color) => color
+      case None => null
+    }
 
     val currentMove = position << (xShift * rowShift, yShift)
 
-    def condition: Boolean = {
-      val mc = colorOf(currentMove)
+    def condition(move: Coord): Boolean = {
+      val mc = colorOf(move)
       val attacking   = (yShift.abs == 1 && mc == color.opposite)
       val movingFirst = (!hasMoved && xShift == 2)
       val moving      = yShift == 0
       (mc == null && (movingFirst || moving)) || attacking
     }
 
-    if (currentMove != null && condition)
-      List(currentMove)
-    else Nil
+    currentMove match {
+      case Some(move) => if (condition(move)) List(move) else Nil
+      case None => Nil
+    }
   }
 }

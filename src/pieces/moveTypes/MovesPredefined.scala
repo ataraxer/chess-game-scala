@@ -12,13 +12,16 @@ import com.ataraxer.apps.chess.scala.Coord
  */
 trait MovesPredefined {
   val position: Coord
-  def moveIsValid(pieceColorMap: Array[Array[Color]], toCoord: Coord): Boolean
+  def moveIsValid(pieceColorMap: ColorMap, toCoord: Coord): Boolean
 
-  def addPredefinedMove(piecesColorMap: Array[Array[Color]], shift: (Int, Int)): List[Coord] = {
+  def addPredefinedMove(piecesColorMap: ColorMap, shift: (Int, Int)): List[Coord] = {
     val currentMove = position << shift
-
-    if (moveIsValid(piecesColorMap, currentMove))
-      List(currentMove)
-    else Nil
+    currentMove match {
+      case Some(move) =>
+        if (moveIsValid(piecesColorMap, move))
+          List(move)
+        else Nil
+      case None => Nil
+    }
   }
 }

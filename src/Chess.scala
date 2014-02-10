@@ -32,9 +32,5 @@ object Chess {
       Coord(3, 5)
     )
 
-    // move knight
-
-
-
   }
 }
