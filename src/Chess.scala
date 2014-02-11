@@ -29,6 +29,7 @@ object Chess {
     // try to move white bishop past black pawn
     move(
       Coord(5, 7),
+      //Coord(4, 6)
       Coord(3, 5)
     )
 

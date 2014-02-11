@@ -27,9 +27,11 @@ trait MovesLineary {
     currentMove match {
       case Some(move) =>
         if (moveIsValid(piecesColorMap, move))
-          iterateDirection(
-            piecesColorMap, coordShift, possibleTurns :+ move, iteration + 1
-          )
+          if (colorOf(move).isEmpty)
+            iterateDirection(
+              piecesColorMap, coordShift, possibleTurns :+ move, iteration + 1
+            )
+          else possibleTurns :+ move
         else possibleTurns
       case None => possibleTurns
     }

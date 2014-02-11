@@ -18,14 +18,13 @@ abstract class Piece(val color: Color, val position: Coord, val hasMoved: Boolea
 
   def setPosition(newPosition: Coord): Piece
 
-  def moveIsValid(pieceColorMap: ColorMap, toCoord: Coord) =
-    toCoord match {
-      case Coord(row, col) => pieceColorMap(row)(col) match {
-        case Some(c) => c != color
-        case None => true
-      }
-      case _ => false
+  def moveIsValid(pieceColorMap: ColorMap, toCoord: Coord) = {
+    val Coord(row, col) = toCoord
+    pieceColorMap(row)(col) match {
+      case Some(c) => c != color
+      case None => true
     }
+  }
 
   def possibleMoves(piecesColorMap: ColorMap): List[Coord] = {
     for (shift <- directionShifts;

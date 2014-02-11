@@ -133,9 +133,8 @@ class Board(inCells: Array[Array[Cell]] = null) {
    * Returns a list of all pieces of chosen color, provided as an argument.
    */
   def getPieces(c: Color) = {
-    for (row <- cells;
-         cell <- row
-         if !cell.isEmpty && cell.color == c) 
+    for (row <- cells; cell <- row
+         if !cell.isEmpty && cell.color == c)
       yield cell.piece
   }
 
