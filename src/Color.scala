@@ -7,11 +7,15 @@ object Color extends Enumeration {
   val White, Black = Value
 
   class ColorValue(color: Value) {
-    def unary_! () =
-      color match {
-        case White => Black
-        case Black => White
-      }
+    def unary_! () = color match {
+      case White => Black
+      case Black => White
+    }
+
+    def shortName = color match {
+      case White => "W"
+      case Black => "B"
+    }
 
     def opposite = unary_!()
   }

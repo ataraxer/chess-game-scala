@@ -10,8 +10,13 @@ import com.ataraxer.apps.chess.scala.Coord
  * Time: 11:26
  */
 trait MovesLineary {
+  val   linearShifts = List((0, 1), (0, -1), ( 1, 0), (-1,  0))
+  val diagonalShifts = List((1, 1), (1, -1), (-1, 1), (-1, -1))
+
   val position: Coord
   def moveIsValid(pieceColorMap: ColorMap, toCoord: Coord): Boolean
+
+  def addMove(cm: ColorMap, cs: (Int, Int)) = iterateDirection(cm, cs)
 
   def iterateDirection(
     piecesColorMap: ColorMap,

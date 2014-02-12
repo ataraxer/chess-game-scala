@@ -9,13 +9,10 @@ import com.ataraxer.apps.chess.scala.Coord
  *
  */
 abstract class Piece(val color: Color, val position: Coord, val hasMoved: Boolean) {
+  val directionShifts: List[(Int, Int)]
 
-  def getTypeAsString: String
-  def directionShifts: List[(Int, Int)]
+  def shortName: String = getClass.getName.split('.').last.substring(0, 2)
   def addMove(piecesColorMap: ColorMap, coordShift: (Int, Int)): List[Coord]
-
-  override def toString = {if (color == White) "W" else "B"} + getTypeAsString
-
   def setPosition(newPosition: Coord): Piece
 
   def moveIsValid(pieceColorMap: ColorMap, toCoord: Coord) = {
@@ -26,9 +23,10 @@ abstract class Piece(val color: Color, val position: Coord, val hasMoved: Boolea
     }
   }
 
-  def possibleMoves(piecesColorMap: ColorMap): List[Coord] = {
+  def possibleMoves(piecesColorMap: ColorMap): List[Coord] =
     for (shift <- directionShifts;
          move  <- addMove(piecesColorMap, shift))
     yield move
-  }
+
+  override def toString = color.shortName + shortName
 }

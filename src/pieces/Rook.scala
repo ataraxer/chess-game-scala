@@ -8,14 +8,8 @@ case class Rook(_color: Color, _position: Coord, _hasMoved: Boolean = false)
     extends Piece(_color, _position, _hasMoved)
     with MovesLineary
 {
-  override def getTypeAsString = "Rk"
-  override def directionShifts = List(
-    (0, 1), (0, -1), ( 1, 0), (-1,  0) // Vertical and horizontal moves
-  )
+  val directionShifts = linearShifts
 
   override def setPosition(position: Coord) =
     Rook(color, position, hasMoved)
-
-  override def addMove(piecesColorMap: ColorMap, coordShift: (Int, Int))
-    = iterateDirection(piecesColorMap, coordShift)
 }

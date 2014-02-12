@@ -14,6 +14,8 @@ trait MovesPredefined {
   val position: Coord
   def moveIsValid(pieceColorMap: ColorMap, toCoord: Coord): Boolean
 
+  def addMove(cm: ColorMap, cs: (Int, Int)) = addPredefinedMove(cm, cs)
+
   def addPredefinedMove(piecesColorMap: ColorMap, shift: (Int, Int)): List[Coord] = {
     val currentMove = position << shift
     currentMove match {

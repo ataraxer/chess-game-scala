@@ -140,19 +140,13 @@ class Board(inCells: Array[Array[Cell]] = null) {
 
   /* Allows to print board in console in a user-readable way. */
   override def toString: String = {
-    var buffer = ""
+    var delimiter = "*********"
+    var field =
+      (for ((row, i) <- cells.zipWithIndex)
+        yield (i.toString ++: row) mkString " ") mkString "\n"
+    var numbers = "   " + ((0 to 7) mkString "   ")
 
-    var rowIndex = 0
-    for (row <- cells) {
-      buffer += format("%d ", rowIndex)
-      rowIndex += 1
-      for (cell <- row)
-        buffer += cell.toString() + " "
-      buffer += "\n"
-    }
-
-    buffer += "   0   1   2   3   4   5   6   7\n"
-    buffer + "*********"
+    List(delimiter, field, numbers, "") mkString "\n"
   }
 
 }
