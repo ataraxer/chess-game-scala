@@ -7,6 +7,7 @@ import com.ataraxer.apps.chess.scala.pieces._
 /**
  * DRAFT
  */
+/*
 object Default {
   def solve(board: Board, color: Color) = {
     val myPieces = board.getPieces(color)
@@ -39,12 +40,12 @@ object Default {
 
   private def pieceValue(p: Piece): Int = {
     p match {
-      case Pawn(_, _, _)   => 1
-      case Knight(_, _, _) => 3
-      case Bishop(_, _, _) => 3
-      case Rook(_, _, _)   => 5
-      case Queen(_, _, _)  => 9
-      case King(_, _, _)   => 20
+      case Pawn(_, _)   => 1
+      case Knight(_, _) => 3
+      case Bishop(_, _) => 3
+      case Rook(_, _)   => 5
+      case Queen(_, _)  => 9
+      case King(_, _)   => 20
     }
   }
 
@@ -85,3 +86,4 @@ object Default {
     }
   }
 }
+*/

@@ -11,12 +11,16 @@ import com.ataraxer.apps.chess.scala.Coord
  * To change this template use File | Settings | File Templates.
  */
 trait MovesPredefined {
-  val position: Coord
   def moveIsValid(pieceColorMap: ColorMap, toCoord: Coord): Boolean
 
-  def addMove(cm: ColorMap, cs: (Int, Int)) = addPredefinedMove(cm, cs)
+  def addMove(p: Coord, cm: ColorMap, cs: (Int, Int)) = addPredefinedMove(p, cm, cs)
 
-  def addPredefinedMove(piecesColorMap: ColorMap, shift: (Int, Int)): List[Coord] = {
+  def addPredefinedMove(
+    position: Coord,
+    piecesColorMap: ColorMap,
+    shift: (Int, Int)
+    ): List[Coord] =
+  {
     val currentMove = position << shift
     currentMove match {
       case Some(move) =>

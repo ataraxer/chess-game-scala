@@ -30,11 +30,11 @@ class Board(inCells: Array[Array[Cell]] = null) {
 
     def generateLastRow(row: Int, color: Color) =
       for ((pieceType, i) <- defaultLayout.zipWithIndex)
-        yield new Cell(Coord(row, i), Some(pieceType(color, Coord(row, i), false)))
+        yield new Cell(Coord(row, i), Some(pieceType(color, false)))
 
     def generatePawnRow(row: Int, color: Color) =
       for (i <- 0 to 7)
-        yield new Cell(Coord(row, i), Some(Pawn(color, Coord(row, i))))
+        yield new Cell(Coord(row, i), Some(Pawn(color)))
 
     def generateRow(row: Int) =
       row match {
@@ -95,7 +95,7 @@ class Board(inCells: Array[Array[Cell]] = null) {
      * Capture in passing;
      * Castling;
      */
-    val moves = piece.possibleMoves(piecesColorMap)
+    val moves = piece.possibleMoves(from, piecesColorMap)
 
     // TODO: replace with exception
     if (!moves.contains(to)) {
@@ -103,9 +103,8 @@ class Board(inCells: Array[Array[Cell]] = null) {
       return null
     }
 
-    val newPiece = piece.setPosition(to)
     this.copy(List(
-      Cell(to, Some(newPiece)),
+      Cell(to, Some(piece)),
       Cell(from, None)
     ))
   }

@@ -13,12 +13,12 @@ trait MovesLineary {
   val   linearShifts = List((0, 1), (0, -1), ( 1, 0), (-1,  0))
   val diagonalShifts = List((1, 1), (1, -1), (-1, 1), (-1, -1))
 
-  val position: Coord
   def moveIsValid(pieceColorMap: ColorMap, toCoord: Coord): Boolean
 
-  def addMove(cm: ColorMap, cs: (Int, Int)) = iterateDirection(cm, cs)
+  def addMove(p: Coord, cm: ColorMap, cs: (Int, Int)) = iterateDirection(p, cm, cs)
 
   def iterateDirection(
+    position: Coord,
     piecesColorMap: ColorMap,
     coordShift: (Int, Int),
     possibleTurns: List[Coord] = List[Coord](),
@@ -34,7 +34,11 @@ trait MovesLineary {
         if (moveIsValid(piecesColorMap, move))
           if (colorOf(move).isEmpty)
             iterateDirection(
-              piecesColorMap, coordShift, possibleTurns :+ move, iteration + 1
+              position,
+              piecesColorMap,
+              coordShift,
+              possibleTurns :+ move,
+              iteration + 1
             )
           else possibleTurns :+ move
         else possibleTurns
