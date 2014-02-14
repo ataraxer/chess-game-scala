@@ -2,7 +2,6 @@ package com.ataraxer.apps.chess.scala
 
 object Color extends Enumeration {
   type Color = Value
-  type ColorMap = Array[Array[Option[Color]]]
 
   val White, Black = Value
 
@@ -23,3 +22,4 @@ object Color extends Enumeration {
   implicit def valueToColorValue(color: Value) =
     new ColorValue(color)
 }
+

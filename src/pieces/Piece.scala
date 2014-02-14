@@ -1,7 +1,8 @@
 package com.ataraxer.apps.chess.scala.pieces
 
 import com.ataraxer.apps.chess.scala.Color._
-import com.ataraxer.apps.chess.scala.Coord
+import com.ataraxer.apps.chess.scala.{Board, Cell, Coord, Shift}
+
 
 /*
  * Piece is abstract class that represents single
@@ -9,23 +10,47 @@ import com.ataraxer.apps.chess.scala.Coord
  *
  */
 abstract class Piece(val color: Color, val hasMoved: Boolean) {
-  val directionShifts: List[(Int, Int)]
+  class ImpossibleMoveException extends Exception
 
   def shortName: String = getClass.getName.split('.').last.substring(0, 2)
-  def addMove(position: Coord, piecesColorMap: ColorMap, coordShift: (Int, Int)): List[Coord]
 
-  def moveIsValid(pieceColorMap: ColorMap, toCoord: Coord) = {
-    val Coord(row, col) = toCoord
-    pieceColorMap(row)(col) match {
+  protected val directionShifts: List[(Int, Int)]
+  protected def addMove(position: Coord, board: Board, shift: Shift): List[Coord]
+
+  def moveIsValid(board: Board, to: Coord) =
+    board(to).color match {
       case Some(c) => c != color
       case None => true
     }
+
+  def possibleMoves(position: Coord, board: Board): List[Coord] =
+    for (shift <- directionShifts;
+         move  <- addMove(position, board, shift))
+    yield move
+
+  def movePossible(board: Board, from: Coord, to: Coord): Boolean =
+    possibleMoves(from, board) contains to
+
+  def copy(hasMoved: Boolean = false): Piece = this match {
+    case Pawn(_, _) => Pawn(color, hasMoved)
+    case Rook(_, _) => Rook(color, hasMoved)
+    case Knight(_, _) => Knight(color, hasMoved)
+    case Bishop(_, _) => Bishop(color, hasMoved)
+    case King(_, _) => King(color, hasMoved)
+    case Queen(_, _) => Queen(color, hasMoved)
   }
 
-  def possibleMoves(position: Coord, piecesColorMap: ColorMap): List[Coord] =
-    for (shift <- directionShifts;
-         move  <- addMove(position, piecesColorMap, shift))
-    yield move
+  def move(board: Board, from: Coord, to: Coord): Board = {
+    val moveIsPossible = possibleMoves(from, board) contains to
+    if (moveIsPossible)
+      board.update(List(
+        Cell(to, Some(this.copy(hasMoved=true))),
+        Cell(from, None)
+      ))
+    else
+      throw new ImpossibleMoveException
+  }
 
   override def toString = color.shortName + shortName
 }
+

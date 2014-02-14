@@ -3,6 +3,7 @@ package com.ataraxer.apps.chess.scala
 import com.ataraxer.apps.chess.scala.Color._
 import com.ataraxer.apps.chess.scala.pieces._
 
+
 /*
  * Class board represents a chess playing board which consists of 64 cells
  * aligned in a 8x8 grid. Every cell may be empty or contain only one piece.
@@ -12,29 +13,30 @@ import com.ataraxer.apps.chess.scala.pieces._
  * Board is immutable — any change in a board will in fact result in a new
  * instance of board with given changes applied during instantiation.
  */
-class Board(inCells: Array[Array[Cell]] = null) {
+object Board {
+  type Layout = Seq[Seq[Cell]]
 
-  // cells are either initialized with given set
-  // or with default layout for a new game of chess
-  val cells: Array[Array[Cell]] =
-    if (inCells == null) defaultLayout else inCells
+  class NoPieceAtCell extends Exception
+
+  val sideSize = 8
+  val defaultLayout = makeDefaultLayout
 
   /*
    * Generates default layout of pieces for a new game of chess.
    * Note that white pieces are always located in a top row and black
    * pieces — in a bottom one.
    */
-  private def defaultLayout: Array[Array[Cell]] = {
+  private def makeDefaultLayout: Layout = {
     val defaultLayout
       = List(Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook)
 
     def generateLastRow(row: Int, color: Color) =
       for ((pieceType, i) <- defaultLayout.zipWithIndex)
-        yield new Cell(Coord(row, i), Some(pieceType(color, false)))
+        yield Cell(Coord(row, i), Some(pieceType(color, false)))
 
     def generatePawnRow(row: Int, color: Color) =
       for (i <- 0 to 7)
-        yield new Cell(Coord(row, i), Some(Pawn(color)))
+        yield Cell(Coord(row, i), Some(Pawn(color)))
 
     def generateRow(row: Int) =
       row match {
@@ -42,32 +44,23 @@ class Board(inCells: Array[Array[Cell]] = null) {
         case 1 => generatePawnRow(row, White)
         case 6 => generatePawnRow(row, Black)
         case 7 => generateLastRow(row, Black)
-        case _ => for (i <- 0 to 7) yield new Cell(Coord(row, i))
+        case _ => for (i <- 0 to 7)
+          yield Cell(Coord(row, i))
       }
 
-    (for (i <- 0 to 7) yield generateRow(i).toArray).toArray
+    (0 to 7) map generateRow
   }
+}
 
-  /* PUBLIC INTERFACE */
-  /*
-   * Accessor for a specified cell which takes in's coordinate
-   * as an argument of Coord type, rather then two integers
-   * representing those coordinates.
-   */
-  def getCell(c: Coord)  = cells(c.row)(c.col)
-  def getPiece(c: Coord) = getCell(c).piece match {
-    case Some(piece) => piece
-    case None => null
-  }
 
+case class Board(cells: Board.Layout = Board.defaultLayout) {
   /*
-   * Generate a 'color map' of a board — a two-dimensional array which
-   * contains information about color of piece in each cell only.
-   * If cell doesn't contains a piece it's value in a color map will be
-   * equal to null.
+   * Method apply allowes to access a boards cell similary to Scala
+   * collections (like multi-dimensional array)
    */
-  def piecesColorMap =
-    for (row <- cells) yield row map { _.color }
+  def apply(row: Int)(column: Int): Cell = cells(row)(column)
+  def apply(cell: Coord): Cell = apply(cell.row)(cell.col)
+
 
   /*
    * Moves piece from one cell to another.
@@ -81,33 +74,12 @@ class Board(inCells: Array[Array[Cell]] = null) {
    * returns a new board with piece in a new position, rather than
    * applying them in a current board itself.
    */
-  def movePiece(from: Coord, to: Coord): Board = {
-    val piece = getPiece(from)
-
-    // TODO: replaces with exception
-    if (piece == null) {
-      println("Piece cell is empty!")
-      return null
+  def movePiece(from: Coord, to: Coord): Board =
+    this(from).piece match {
+      case Some(piece) => piece.move(this, from, to)
+      case None => throw new Board.NoPieceAtCell
     }
 
-    /* TODO: add exceptional moves processing
-     * Pawn promotion;
-     * Capture in passing;
-     * Castling;
-     */
-    val moves = piece.possibleMoves(from, piecesColorMap)
-
-    // TODO: replace with exception
-    if (!moves.contains(to)) {
-      println("Invalid move!")
-      return null
-    }
-
-    this.copy(List(
-      Cell(to, Some(piece)),
-      Cell(from, None)
-    ))
-  }
 
   /*
    * Copies a current board including all containing cells and pieces,
@@ -117,27 +89,25 @@ class Board(inCells: Array[Array[Cell]] = null) {
    * which may or may not contain pieces in them, that will replace
    * cells of a current board with the same coordinates.
    */
-  def copy(updatedCells: List[Cell] = null) = {
-    def copyCell(c: Cell): Cell = {
-      val updated = updatedCells filter { _.coordinates == c.coordinates }
-      if (updated.nonEmpty) updated.head else c
-    }
+  def update(updatedCells: List[Cell]) = {
+    def copyCell(c: Cell) = updatedCells.find(_ == c).getOrElse(c)
 
-    val newCells = for (row <- cells) yield row map { copyCell(_) }
+    val newCells = for (row <- cells)
+      yield row map copyCell
 
-    new Board(newCells)
+    Board(newCells)
   }
+
 
   /*
    * Returns a list of all pieces of chosen color, provided as an argument.
    */
-  def getPieces(c: Color) = {
-    for (row <- cells; cell <- row
-         if !cell.isEmpty && cell.color == c)
+  def piecesOfColor(c: Color) =
+    for (row <- cells; cell <- row if cell.color == Some(c))
       yield cell.piece
-  }
 
-  /* Allows to print board in console in a user-readable way. */
+
+  /* Allows to print board to console in a user-readable way. */
   override def toString: String = {
     var delimiter = "*********"
     var field =
@@ -147,5 +117,5 @@ class Board(inCells: Array[Array[Cell]] = null) {
 
     List(delimiter, field, numbers, "") mkString "\n"
   }
-
 }
+

@@ -1,7 +1,8 @@
 package com.ataraxer.apps.chess.scala.pieces.moveTypes
 
 import com.ataraxer.apps.chess.scala.Color._
-import com.ataraxer.apps.chess.scala.Coord
+import com.ataraxer.apps.chess.scala.{Board, Coord, Shift}
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,23 +12,13 @@ import com.ataraxer.apps.chess.scala.Coord
  * To change this template use File | Settings | File Templates.
  */
 trait MovesPredefined {
-  def moveIsValid(pieceColorMap: ColorMap, toCoord: Coord): Boolean
+  def moveIsValid(board: Board, toCoord: Coord): Boolean
 
-  def addMove(p: Coord, cm: ColorMap, cs: (Int, Int)) = addPredefinedMove(p, cm, cs)
-
-  def addPredefinedMove(
-    position: Coord,
-    piecesColorMap: ColorMap,
-    shift: (Int, Int)
-    ): List[Coord] =
-  {
-    val currentMove = position << shift
-    currentMove match {
+  def addMove(position: Coord, board: Board, shift: Shift): List[Coord] =
+    (position << shift) match {
       case Some(move) =>
-        if (moveIsValid(piecesColorMap, move))
-          List(move)
-        else Nil
+        if (moveIsValid(board, move)) List(move) else Nil
       case None => Nil
     }
-  }
 }
+

@@ -32,6 +32,5 @@ object Chess {
       //Coord(4, 6)
       Coord(3, 5)
     )
-
   }
 }

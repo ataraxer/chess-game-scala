@@ -4,6 +4,7 @@ import com.ataraxer.apps.chess.scala.Color._
 import com.ataraxer.apps.chess.scala.Coord
 import com.ataraxer.apps.chess.scala.pieces.moveTypes.MovesPredefined
 
+
 case class Knight(_color: Color, _hasMoved: Boolean = false)
     extends Piece(_color, _hasMoved) with MovesPredefined
 {
@@ -12,3 +13,4 @@ case class Knight(_color: Color, _hasMoved: Boolean = false)
     (2, 1), (2, -1), (-2, 1), (-2, -1)
   )
 }
+
