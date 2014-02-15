@@ -4,13 +4,6 @@ import com.ataraxer.apps.chess.scala.Color._
 import com.ataraxer.apps.chess.scala.{Board, Coord, Shift}
 
 
-/**
- * Created with IntelliJ IDEA.
- * User: Ataraxer
- * Date: 11.12.12
- * Time: 11:26
- * To change this template use File | Settings | File Templates.
- */
 trait MovesPredefined {
   def moveIsValid(board: Board, toCoord: Coord): Boolean
 

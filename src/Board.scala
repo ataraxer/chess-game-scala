@@ -109,13 +109,13 @@ case class Board(cells: Board.Layout = Board.defaultLayout) {
 
   /* Allows to print board to console in a user-readable way. */
   override def toString: String = {
-    var delimiter = "*********"
-    var field =
-      (for ((row, i) <- cells.zipWithIndex)
-        yield (i.toString ++: row) mkString " ") mkString "\n"
-    var numbers = "   " + ((0 to 7) mkString "   ")
+    var lines =
+      for ((row, i) <- cells.zipWithIndex)
+        yield (i.toString ++: row) mkString " "
 
-    List(delimiter, field, numbers, "") mkString "\n"
+    var numbers = "\n   0   1   2   3   4   5   6   7\n"
+
+    (lines mkString "\n") + numbers
   }
 }
 

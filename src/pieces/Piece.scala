@@ -9,19 +9,18 @@ import com.ataraxer.apps.chess.scala.{Board, Cell, Coord, Shift}
  * chess piece which can be located somewhere on the board
  *
  */
-abstract class Piece(val color: Color, val hasMoved: Boolean) {
+object Piece {
   class ImpossibleMoveException extends Exception
+}
 
+abstract class Piece(val color: Color, val hasMoved: Boolean) {
   def shortName: String = getClass.getName.split('.').last.substring(0, 2)
 
   protected val directionShifts: List[(Int, Int)]
   protected def addMove(position: Coord, board: Board, shift: Shift): List[Coord]
 
   def moveIsValid(board: Board, to: Coord) =
-    board(to).color match {
-      case Some(c) => c != color
-      case None => true
-    }
+    board(to).color != Some(color)
 
   def possibleMoves(position: Coord, board: Board): List[Coord] =
     for (shift <- directionShifts;
@@ -48,7 +47,7 @@ abstract class Piece(val color: Color, val hasMoved: Boolean) {
         Cell(from, None)
       ))
     else
-      throw new ImpossibleMoveException
+      throw new Piece.ImpossibleMoveException
   }
 
   override def toString = color.shortName + shortName

@@ -1,5 +1,7 @@
 package com.ataraxer.apps.chess.scala
 
+import scala.language.implicitConversions
+
 
 /*
  * Coord
@@ -11,11 +13,12 @@ object Shift {
   implicit def tupleToShift(tuple: (Int, Int)) = Shift(tuple._1, tuple._2)
 }
 
-case class Shift(row: Int, col: Int) {
-  def * (m: Int) = Shift(row * m, col * m)
-  def * (r: Int, c: Int) = Shift(row * r, col * c)
-  def + (m: Int) = Shift(row + m, col + m)
-  def + (s: Shift) = Shift(row + s.row, col + s.col)
+case class Shift(x: Int, y: Int) {
+  def * (m: Int) = Shift(x * m, y * m)
+  def * (r: Int, c: Int) = Shift(x * r, y * c)
+  def * (m: (Int, Int)) = Shift(x * m._1, y * m._2)
+  def + (m: Int) = Shift(x + m, y + m)
+  def + (s: Shift) = Shift(x + s.x, y + s.y)
 }
 
 case class Coord(row: Int, col: Int) {
@@ -31,7 +34,7 @@ case class Coord(row: Int, col: Int) {
   def << (sh: Shift): Option[Coord] = shift(sh)
   def << (tor: Int, toc: Int): Option[Coord] = shift(tor, toc)
 
-  def shift(sh: Shift): Option[Coord] = shift(sh.row, sh.col)
+  def shift(sh: Shift): Option[Coord] = shift(sh.x, sh.y)
   def shift(rowShift: Int, columnShift: Int): Option[Coord] =
     try {
       Some(Coord(row + rowShift, col + columnShift))

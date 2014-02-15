@@ -1,5 +1,8 @@
 package com.ataraxer.apps.chess.scala
 
+import scala.language.implicitConversions
+
+
 object Color extends Enumeration {
   type Color = Value
 
