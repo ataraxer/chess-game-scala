@@ -9,16 +9,18 @@ trait MovesLineary {
   val diagonalShifts = List((1, 1), (1, -1), (-1, 1), (-1, -1))
 
   val color: Color
-  val DiffColor = color.opposite
 
   def addMove(position: Coord, board: Board, shift: Shift): List[Coord] = {
-    def nextMove(cShift: Shift): List[Coord] =
-      (position << cShift) match {
+    // other color that that of a piece
+    val Diff = Some(color.opposite)
+
+    def nextMove(currentShift: Shift): List[Coord] =
+      (position << currentShift) match {
         case Some(move) =>
           board(move).color match {
-            case None => move :: nextMove(cShift + shift)
-            case Some(DiffColor) => List(move)
-            case _ => Nil
+            case None => move :: nextMove(currentShift + shift)
+            case Diff => List(move)
+            case _    => Nil
           }
         case None => Nil
       }

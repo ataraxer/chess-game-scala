@@ -100,11 +100,16 @@ case class Board(cells: Board.Layout = Board.defaultLayout) {
 
 
   /*
+   * Returns all cells sequentially.
+   */
+  def allCells = for (row <- cells; cell <- row) yield cell
+
+
+  /*
    * Returns a list of all pieces of chosen color, provided as an argument.
    */
-  def piecesOfColor(c: Color) =
-    for (row <- cells; cell <- row if cell.color == Some(c))
-      yield cell.piece
+  def piecesOfColor(color: Color) =
+    allCells filter { _.color == Some(color) }
 
 
   /* Allows to print board to console in a user-readable way. */

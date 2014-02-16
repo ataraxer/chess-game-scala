@@ -14,9 +14,9 @@ case class Pawn(_color: Color, _hasMoved: Boolean = false)
     def moveIsValid(move: Coord) = {
       val moveColor = board(move).color
       shift match {
-        case Shift(1, 1 | -1) => (moveColor == Some(color.opposite))
-        case Shift(1, 0) => (moveColor == None)
-        case Shift(2, 0) => (!hasMoved && moveColor == None)
+        case Shift(1, 1 | -1) => moveColor == Some(color.opposite)
+        case Shift(1, 0)      => moveColor == None
+        case Shift(2, 0)      => moveColor == None && !hasMoved
       }
     }
 
