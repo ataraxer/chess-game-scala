@@ -112,7 +112,9 @@ case class Board(cells: Board.Layout = Board.defaultLayout) {
     allCells filter { _.color == Some(color) }
 
 
-  /* Allows to print board to console in a user-readable way. */
+  /*
+   * Allows to print board to console in a user-readable way.
+   */
   override def toString: String = {
     var lines =
       for ((row, i) <- cells.zipWithIndex)
@@ -120,7 +122,7 @@ case class Board(cells: Board.Layout = Board.defaultLayout) {
 
     var numbers = "\n   0   1   2   3   4   5   6   7\n"
 
-    (lines mkString "\n") + numbers
+    "\n" + (lines mkString "\n") + numbers
   }
 }
 
