@@ -1,7 +1,13 @@
 package com.ataraxer.apps.chess.scala.pieces
 
 import com.ataraxer.apps.chess.scala.Color._
-import com.ataraxer.apps.chess.scala.{Board, Coord, Shift}
+import com.ataraxer.apps.chess.scala.{Board, Cell, Coord, Shift}
+
+
+object Pawn {
+  class WrongPromotionTypeException extends Exception
+  class PawnCantBePromotedException extends Exception
+}
 
 
 case class Pawn(_color: Color, _hasMoved: Boolean = false)
@@ -26,5 +32,22 @@ case class Pawn(_color: Color, _hasMoved: Boolean = false)
       case None => Nil
     }
   }
+
+
+  def isPromotable(at: Coord): Boolean =
+    at match {
+      case Coord(_, 7) if color == White => true
+      case Coord(_, 0) if color == Black => true
+      case _ => false
+    }
+
+
+    def promote(board: Board, at: Coord, to: (Color, Boolean) => Piece): Board =
+    if (isPromotable(at))
+      board.update(List(
+        Cell(at, Some(to(color, true)))
+      ))
+    else
+      throw new Pawn.PawnCantBePromotedException
 }
 

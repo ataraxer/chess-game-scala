@@ -16,7 +16,8 @@ import com.ataraxer.apps.chess.scala.pieces._
 object Board {
   type Layout = Seq[Seq[Cell]]
 
-  class NoPieceAtCell extends Exception
+  class NoPieceAtCellException extends Exception
+  class AttemptToPromoteNonePawnException extends Exception
 
   val sideSize = 8
   val defaultLayout = makeDefaultLayout
@@ -77,7 +78,27 @@ case class Board(cells: Board.Layout = Board.defaultLayout) {
   def movePiece(from: Coord, to: Coord): Board =
     this(from).piece match {
       case Some(piece) => piece.move(this, from, to)
-      case None => throw new Board.NoPieceAtCell
+      case None => throw new Board.NoPieceAtCellException
+    }
+
+
+  /*
+   * Promote pawn that reached the opposide side of the board.
+   */
+  def promotePawn[A](at: Coord, to: A): Board =
+    this(at).piece match {
+      case Some(p @ Pawn(_, _)) => {
+        val pieceGen = to match {
+          case Rook   => Rook.apply _
+          case Bishop => Bishop.apply _
+          case Knight => Knight.apply _
+          case Queen  => Queen.apply _
+          case _ => throw new Pawn.PawnCantBePromotedException
+        }
+        p.promote(this, at, pieceGen)
+      }
+      case None => throw new Board.NoPieceAtCellException
+      case _    => throw new Board.AttemptToPromoteNonePawnException
     }
 
 
