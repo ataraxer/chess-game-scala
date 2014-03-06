@@ -110,7 +110,7 @@ case class Board(cells: Board.Layout = Board.defaultLayout) {
    * which may or may not contain pieces in them, that will replace
    * cells of a current board with the same coordinates.
    */
-  def update(updatedCells: List[Cell]) = {
+  def update(updatedCells: Cell*): Board = {
     def copyCell(c: Cell) = updatedCells.find(_ == c).getOrElse(c)
 
     val newCells = for (row <- cells)

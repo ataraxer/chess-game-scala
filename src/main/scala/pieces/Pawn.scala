@@ -44,9 +44,9 @@ case class Pawn(_color: Color, _hasMoved: Boolean = false)
 
     def promote(board: Board, at: Coord, to: (Color, Boolean) => Piece): Board =
     if (isPromotable(at))
-      board.update(List(
+      board.update(
         Cell(at, Some(to(color, true)))
-      ))
+      )
     else
       throw new Pawn.PawnCantBePromotedException
 }

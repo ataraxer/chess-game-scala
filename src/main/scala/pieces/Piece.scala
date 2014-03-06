@@ -42,10 +42,10 @@ abstract class Piece(val color: Color, val hasMoved: Boolean) {
   def move(board: Board, from: Coord, to: Coord): Board = {
     val moveIsPossible = possibleMoves(from, board) contains to
     if (moveIsPossible)
-      board.update(List(
+      board.update(
         Cell(to, Some(this.copy(hasMoved=true))),
         Cell(from, None)
-      ))
+      )
     else
       throw new Piece.ImpossibleMoveException
   }
