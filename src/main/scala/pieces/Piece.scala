@@ -13,7 +13,11 @@ object Piece {
   class ImpossibleMoveException extends Exception
 }
 
-abstract class Piece(val color: Color, val hasMoved: Boolean) {
+
+trait Piece {
+  val color: Color
+  def hasMoved: Boolean
+
   def shortName: String = getClass.getName.split('.').last.substring(0, 2)
 
   protected val directionShifts: List[(Int, Int)]

@@ -10,8 +10,8 @@ object Pawn {
 }
 
 
-case class Pawn(_color: Color, _hasMoved: Boolean = false)
-    extends Piece(_color, _hasMoved)
+case class Pawn(color: Color, hasMoved: Boolean = false)
+    extends Piece
 {
   val directionShifts = List((1, 1), (1, -1), (1, 0), (2,  0))
   val direction = if (color == White) (1, 0) else (-1, 0)

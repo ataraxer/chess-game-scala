@@ -5,8 +5,8 @@ import com.ataraxer.apps.chess.scala.Coord
 import com.ataraxer.apps.chess.scala.pieces.moveTypes.MovesLineary
 
 
-case class Queen(_color: Color, _hasMoved: Boolean = false)
-    extends Piece(_color, _hasMoved) with MovesLineary
+case class Queen(color: Color, hasMoved: Boolean = false)
+    extends Piece with MovesLineary
 {
   val directionShifts = linearShifts ++ diagonalShifts
 }
